@@ -1,0 +1,38 @@
+*{
+    padding: 0%;
+    margin: 0%;
+    box-shadow: border-box;
+}
+body{
+    height: 100%;
+    width: 100%;
+    background: gray;
+}
+h1{
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bolder;
+    color: brown;
+    text-align: center;
+}
+p{
+    text-align: center;
+    padding: 100px 0px;
+}
+#search{
+    padding: 20px;
+    align-items: center;
+    width: 25%;
+    float:center;
+}
+#search2{
+    padding: 20px;
+    align-items: center;
+    width: 10%;
+    
+}
+.form{
+    align-items: center;
+    float: center;
+}
+
