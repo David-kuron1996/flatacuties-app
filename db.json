@@ -1,0 +1,64 @@
+{
+    "Animals" : [
+{
+    "name" : "cat",
+    "image" : "images/cat.jpg",
+    "votes" : 0,
+    "id" : 1
+    },
+    {
+    "name" : "dog",
+    "image" : "images/dog.jpg",
+    "votes" : 0,
+    "id" : 2
+    },
+    {
+    "name" : "donkey",
+    "image" : "images/donkey.jpg",
+    "votes" : 0,
+    "id" : 3
+    },
+    {
+    "name" : "horse",
+    "image" : "images/horse.jpg",
+    "votes" : 0,
+    "id" : 4
+    },
+    {
+    "name" : "sheep",
+    "image" : "images/sheep.jpg",
+    "votes" : 0,
+    "id" : 5
+    },
+    {
+    "name" : "zebra",
+    "image" : "images/zebra.jpg",
+    "votes" : 0,
+    "id" : 6
+    },
+     {
+    "name" : "monkey",
+    "image" : "images/monkey.jpg",
+    "votes" : 0,
+    "id" : 7
+    },
+     {
+    "name" : "cow",
+    "image" : "images/cow.jpg",
+    "votes" : 0,
+    "id" : 8
+    },
+     {
+    "name" : "rabbit",
+    "image" : "images/rabbit.jpg",
+    "votes" : 0,
+    "id" : 9
+    },
+     {
+    "name" : "goat",
+    "image" : "images/goat.jpg",
+    "votes" : 0,
+    "id" : 10
+    }
+]
+}
