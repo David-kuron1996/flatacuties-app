@@ -61,7 +61,7 @@ margin-bottom: 10px;
     font-size: bold;
     color: #007bff;
 }
-.vote-btn{
+.vote-btn,.resetBtn{
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -72,5 +72,40 @@ margin-bottom: 10px;
 }
 .vote-btn:hover{
     background-color: #0056b3;
+}
+
+
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); color: #4CAF50; }
+    100% { transform: scale(1); }
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1000;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+}
+
+.notification.error {
+    background-color: #f44336;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
