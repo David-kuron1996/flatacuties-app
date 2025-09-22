@@ -1,15 +1,4 @@
 
-
-// // get dom
-// const voteA = documentgetElementById('vote-btn');
-// const countDisplayvote = documentgetElementById('vote-count');
-
-// // addEventListener
-// voteA.addEventlistener('click', () => {
-//     vote-count++
-//     countDisplayvote.textcontent = vote-count
-// })
-
 // Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', () => {
     // Using the Fetch API to get data from a URL
