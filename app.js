@@ -1,95 +1,131 @@
-
-// Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', () => {
-    // Using the Fetch API to get data from a URL
-fetch('http://localhost:3000/characters')
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
-
-    // Get all vote buttons
-    const voteButtons = document.querySelectorAll('button[data-animal]');
+    // DOM Elements
+    const loadingEl = document.getElementById('loading');
+    const errorEl = document.getElementById('error');
+    const animalsContainerEl = document.getElementById('animals-container');
+    const resultsContainerEl = document.getElementById('results-container');
+    const resultsEl = document.getElementById('results');
     
-    // Initialize vote counts from localStorage or set to 0
-    let voteCounts = JSON.parse(localStorage.getItem('animalVotes')) || {};
+    // State
+    let animals = [];
+    let showResults = false;
     
-    // Update the display with saved votes
-    updateVoteDisplay();
+    // Fetch animals data
+    async function fetchAnimals() {
+        try {
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            
+            const response = await fetch('db.json');
+            if (!response.ok) throw new Error('Failed to fetch data');
+            
+            const data = await response.json();
+            animals = data.characters;
+            
+            renderAnimals();
+        } catch (error) {
+            showError(error.message);
+        } finally {
+            loadingEl.style.display = 'none';
+        }
+    }
     
-    // Add click event listener to each button
-    voteButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const animalName = button.getAttribute('data-animal');
-            
-            // Increment the vote count for this animal
-            if (!voteCounts[animalName]) {
-                voteCounts[animalName] = 0;
-            }
-            voteCounts[animalName]++;
-            
-            // Save to localStorage
-            localStorage.setItem('animalVotes', JSON.stringify(voteCounts));
-            
-            // Update the display
-            updateVoteDisplay();
-            
-            // Show a thank you message
-            showThankYouMessage(animalName);
-        });
-    });
+    // Show error message
+    function showError(message) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+        animalsContainerEl.style.display = 'none';
+        resultsContainerEl.style.display = 'none';
+    }
     
-    // Function to update the vote count display
-    function updateVoteDisplay() {
-        const voteCountElements = document.querySelectorAll('.vote-count');
+    // Render animals voting interface
+    function renderAnimals() {
+        animalsContainerEl.innerHTML = '';
+        animalsContainerEl.style.display = 'grid';
+        resultsContainerEl.style.display = 'none';
         
-        voteCountElements.forEach(element => {
-            const animalName = element.getAttribute('data-animal');
-            const count = voteCounts[animalName] || 0;
-            element.textContent = count;
+        animals.forEach(animal => {
+            const card = document.createElement('div');
+            card.className = 'animal-card';
+            card.innerHTML = `
+                <img src="${animal.image}" alt="${animal.name}" class="animal-image">
+                <h3>${animal.name}</h3>
+                <p>Votes: <span class="vote-count">${animal.votes}</span></p>
+                <button class="vote-btn" data-id="${animal.id}">Vote</button>
+            `;
+            animalsContainerEl.appendChild(card);
+        });
+        
+        // Add vote button event listeners
+        document.querySelectorAll('.vote-btn').forEach(btn => {
+            btn.addEventListener('click', handleVote);
+        });
+        
+        // Add toggle results button
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'toggle-btn';
+        toggleBtn.textContent = 'Show Results';
+        toggleBtn.addEventListener('click', toggleResults);
+        animalsContainerEl.appendChild(toggleBtn);
+    }
+    
+    // Handle vote button click
+    function handleVote(e) {
+        const id = parseInt(e.target.dataset.id);
+        const animal = animals.find(a => a.id === id);
+        
+        if (animal) {
+            animal.votes++;
+            document.querySelector(`[data-id="${id}"]`).previousElementSibling.querySelector('.vote-count').textContent = animal.votes;
+        }
+    }
+    
+    // Toggle between voting and results view
+    function toggleResults() {
+        showResults = !showResults;
+        
+        if (showResults) {
+            renderResults();
+            document.querySelector('.toggle-btn').textContent = 'Back to Voting';
+        } else {
+            renderAnimals();
+        }
+    }
+    
+    // Render voting results
+    function renderResults() {
+        resultsContainerEl.style.display = 'block';
+        animalsContainerEl.style.display = 'none';
+        
+        // Sort animals by votes (descending)
+        const sortedAnimals = [...animals].sort((a, b) => b.votes - a.votes);
+        
+        resultsEl.innerHTML = '';
+        
+        sortedAnimals.forEach((animal, index) => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
             
-            // Update pluralization
-            const voteText = element.nextElementSibling;
-            if (voteText && voteText.textContent.includes('vote')) {
-                voteText.textContent = count === 1 ? ' vote' : ' votes';
-            }
+            // Calculate percentage for visual bar
+            const totalVotes = animals.reduce((sum, a) => sum + a.votes, 0) || 1;
+            const percentage = Math.round((animal.votes / totalVotes) * 100);
+            
+            resultItem.innerHTML = `
+                <div class="result-rank">${index + 1}</div>
+                <img src="${animal.image}" alt="${animal.name}" class="result-image">
+                <div class="result-info">
+                    <h3>${animal.name}</h3>
+                    <div class="vote-bar-container">
+                        <div class="vote-bar" style="width: ${percentage}%"></div>
+                    </div>
+                    <p>${animal.votes} votes (${percentage}%)</p>
+                </div>
+            `;
+            
+            resultsEl.appendChild(resultItem);
         });
     }
     
-    // Function to show a thank you message
-    function showThankYouMessage(animalName) {
-        // Create a temporary message element
-        const message = document.createElement('div');
-        message.className = 'thank-you-message';
-        message.textContent = `Thank you for voting for ${animalName}!`;
-        
-        // Style the message
-        message.style.position = 'fixed';
-        message.style.top = '20px';
-        message.style.left = '50%';
-        message.style.transform = 'translateX(-50%)';
-        message.style.backgroundColor = '#4CAF50';
-        message.style.color = 'white';
-        message.style.padding = '10px 20px';
-        message.style.borderRadius = '5px';
-        message.style.zIndex = '1000';
-        message.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-        message.style.opacity = '0';
-        message.style.transition = 'opacity 0.5s';
-        
-        // Add to the page
-        document.body.appendChild(message);
-        
-        // Fade in
-        setTimeout(() => {
-            message.style.opacity = '1';
-        }, 10);
-        
-        // Remove after 3 seconds
-        setTimeout(() => {
-            message.style.opacity = '0';
-            setTimeout(() => {
-                document.body.removeChild(message);
-            }, 500);
-        }, 3000);
-    }
+    // Initialize the app
+    fetchAnimals();
 });

@@ -1,0 +1,26 @@
+function renderAnimals(animals) {
+    animalsContainer.innerHTML = '';
+    
+    animals.forEach(animal => {
+        const card = document.createElement('div');
+        card.className = 'animal-card';  // Fixed: added proper class name
+        
+        card.innerHTML = `
+            <img src="${animal.image}" alt="${animal.name}" class="animal-image">
+            <div class="animal-info">
+                <h3 class="animal-name">${animal.name}</h3>
+                <div class="vote-section">
+                    <span class="vote-count">Votes: <span id="votes-${animal.id}">${animal.votes}</span></span>
+                    <button class="vote-btn" data-id="${animal.id}">Vote</button>
+                </div>
+            </div>
+        `;
+        
+        animalsContainer.appendChild(card);
+    });
+    
+    // Add event listeners to vote buttons
+    document.querySelectorAll('.vote-btn').forEach(button => {
+        button.addEventListener('click', handleVote);
+    });
+}
