@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const loadingEl = document.getElementById('loading');
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // State
     let animals = [];
+
     let showResults = false;
     
     // Fetch animals data
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingEl.style.display = 'block';
             errorEl.style.display = 'none';
             
-            const response = await fetch('db.json');
+            const response = await fetch("db.json");
             if (!response.ok) throw new Error('Failed to fetch data');
             
             const data = await response.json();
