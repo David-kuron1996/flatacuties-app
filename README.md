@@ -20,13 +20,11 @@ A simple web application that allows users to vote for their favorite animals an
 
 ## File Structure
 
-```
-/
-├── index.html       # Main HTML file
-├── script.js        # JavaScript application code
-├── style.css        # CSS styles
-└── db.json          # Animal data (name, votes, image)
-```
+ index.html       # Main HTML file
+ script.js        # JavaScript application code
+ style.css        # CSS styles
+ db.json          # Animal data (name, votes, image)
+
 
 ## Data Structure
 
@@ -84,10 +82,10 @@ The application uses the following CSS classes for styling:
 ## Browser Compatibility
 
 This application works in all modern browsers that support:
-- ES6 JavaScript features
+- ES6 JavaScript features  
 - Fetch API
 - DOM manipulation methods
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is open source and available under the MIT License.  
