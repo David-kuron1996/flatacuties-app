@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'animal-card';
             card.innerHTML = `
-                <img src="${animal.image}" alt="${animal.name}" class="animal-image">
                 <h3>${animal.name}</h3>
                 <p>Votes: <span class="vote-count">${animal.votes}</span></p>
                 <button class="vote-btn" data-id="${animal.id}">Vote</button>
